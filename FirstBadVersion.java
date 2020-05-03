@@ -1,28 +1,21 @@
-class Solution {
-    public boolean canConstruct(String ransomNote, String magazine) {
-        if(ransomNote.equals(magazine)) return true;
-        if(magazine.length()<ransomNote.length()) return false;
-        char a[] = ransomNote.toCharArray();
-        char b[] = magazine.toCharArray();
-        HashMap<Character,Integer> hm = new HashMap<>();
-        for(int i=0;i<b.length;i++){
-            if(!hm.containsKey(b[i])){
-                hm.put(b[i],1);
+/* The isBadVersion API is defined in the parent class VersionControl.
+      boolean isBadVersion(int version); */
+
+public class Solution extends VersionControl {
+    public int firstBadVersion(int n) {
+        int beg=0;
+        int end = n;
+        int mid = beg+(end-beg)/2;
+        while(beg<end){
+            boolean ans = isBadVersion(mid);
+            if(ans){
+                end=mid;
             }
             else{
-                int count = hm.get(b[i]);
-                hm.put(b[i],count+1);
+                beg=mid+1;
             }
+            mid = beg+(end-beg)/2;
         }
-        for(int i=0;i<a.length;i++){
-            if( !hm.containsKey(a[i]) || hm.get(a[i])==0 ){
-                return false;
-            }
-            else{
-                int count =  hm.get(a[i]);
-                hm.put(a[i],count-1);
-            }
-        }
-        return true;
+        return beg;
     }
 }
